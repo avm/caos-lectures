@@ -4,6 +4,9 @@
 int optimized_away() {
     char string[] = "a very long string\n";
     char *p = string;
+    // Old school strlen
+    // scasb: compare %al with (%edi) and set flags, then inc %edi
+    // repnz: repeat while not ZF
     asm( "repnz scasb" : "+D"(p) : "a"(0), "c"(1024) );
     return p - string;
 }
