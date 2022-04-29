@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     }   
     struct addrinfo *res = NULL;
     int gai_err;
-    if (gai_err = getaddrinfo(argv[1], argv[2], NULL, &res)) {
+    if ((gai_err = getaddrinfo(argv[1], argv[2], NULL, &res))) {
         fprintf(stderr, "gai error: %s\n", gai_strerror(gai_err));
         return 2;
     }   

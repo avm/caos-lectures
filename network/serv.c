@@ -15,7 +15,7 @@ int create_listener(char* service, int* family) {
         .ai_socktype = SOCK_STREAM,
         .ai_flags = AI_PASSIVE,
     };
-    if (gai_err = getaddrinfo(NULL, service, &hint, &res)) {
+    if ((gai_err = getaddrinfo(NULL, service, &hint, &res))) {
         fprintf(stderr, "gai error: %s\n", gai_strerror(gai_err));
         return -1;
     }
