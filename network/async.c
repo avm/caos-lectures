@@ -98,6 +98,11 @@ int main(int argc, char* argv[]) {
             } else {
                 buf[chunk] = '\0';
                 printf("read from %d: %s\n", events[0].data.fd, buf);
+
+                // write(events[0].data.fd, buf, chunk);
+                ev.events = EPOLLOUT;
+                ev.data.fd = events[0].data.fd;
+                epoll_ctl(epollfd, EPOLL_CTL_MOD, events[0].data.fd, &ev);
             }
         }
     }

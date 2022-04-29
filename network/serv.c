@@ -74,6 +74,6 @@ int main(int argc, char* argv[]) {
             return 0;
         }
         close(connection);
-        while (wait(NULL) != -1);
+        while (waitpid(-1, NULL, WNOHANG) != -1);
     }
 }

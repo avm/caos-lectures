@@ -90,11 +90,10 @@ int main(int argc, char* argv[]) {
                 fwrite(buf, 1, chunk, wfile);
             }
             fflush(wfile);
-            shutdown(wconn, SHUT_RDWR);
             fclose(rfile);
             return 0;
         }
         close(connection);
-        while (wait(NULL) != -1);
+        while (waitpid(-1, NULL, WNOHANG) > 0);
     }
 }
