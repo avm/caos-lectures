@@ -36,7 +36,7 @@ int create_listener(char* service, int* family) {
             sock = -1;
             continue;
         }
-        if (listen(sock, 1) < 0) {
+        if (listen(sock, SOMAXCONN) < 0) {
             perror("listen");
             close(sock);
             sock = -1;
