@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <assert.h>
 
 int create_listener(char* service, int* family) {
     struct addrinfo *res = NULL;
@@ -89,7 +90,7 @@ int main(int argc, char* argv[]) {
             ev.events = EPOLLIN;
             ev.data.fd = connection;
             epoll_ctl(epollfd, EPOLL_CTL_ADD, connection, &ev);
-        } else {
+        } else if (events[0].events & EPOLLIN) {
             char buf[1024];
             ssize_t chunk = read(events[0].data.fd, buf, sizeof(buf)-1);
             if (chunk == 0) {
@@ -104,6 +105,12 @@ int main(int argc, char* argv[]) {
                 ev.data.fd = events[0].data.fd;
                 epoll_ctl(epollfd, EPOLL_CTL_MOD, events[0].data.fd, &ev);
             }
+        } else {
+            assert(events[0].events & EPOLLOUT);
+            write(events[0].data.fd, "ack\n", 4);
+            ev.events = EPOLLIN;
+            ev.data.fd = events[0].data.fd;
+            epoll_ctl(epollfd, EPOLL_CTL_MOD, events[0].data.fd, &ev);
         }
     }
 }
