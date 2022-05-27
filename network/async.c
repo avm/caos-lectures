@@ -23,7 +23,7 @@ int create_listener(char* service, int* family) {
     }
     int sock = -1;
     for (struct addrinfo *ai = res; ai; ai = ai->ai_next) {
-        sock = socket(ai->ai_family, ai->ai_socktype | SOCK_NONBLOCK, 0);
+        sock = socket(ai->ai_family, ai->ai_socktype, IPPROTO_TCP);
         if (sock < 0) {
             perror("socket");
             continue;
@@ -38,7 +38,7 @@ int create_listener(char* service, int* family) {
             sock = -1;
             continue;
         }
-        if (listen(sock, 1) < 0) {
+        if (listen(sock, SOMAXCONN) < 0) {
             perror("listen");
             close(sock);
             sock = -1;
